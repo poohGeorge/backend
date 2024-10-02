@@ -25,3 +25,4 @@ def translate_excel(input_file, source_lang, target_lang):
 
     # Save the updated workbook
     workbook.save(output_file)
+    return(output_file)

@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from MachineTranslate.textTranslate import translate_text
-from MachineTranslate import docxTranslate, pdfTranslate, excelTranslate
+from MachineTranslate import docxTranslate, pdfTranslate, excelTranslate, pptxTranslate
 import shutil
 import os
 
@@ -40,13 +40,16 @@ async def translate_doc(
     file_location = f"./{file.filename}"
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
+
+
+
     #Translate Docx File
     if file.filename.endswith('.docx'):
-        # docTranslate.doc()
-        translated_file_path = docxTranslate.translate_docx(file_location, sourceLang, targetLang)
-        if os.path.exists(translated_file_path):
-            headers = {"Content-Disposition": "attachment; filename=translated_doc.docx"}
-            return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', headers=headers)
+        docxTranslate.doc()
+        # translated_file_path = docxTranslate.translate_docx(file_location, sourceLang, targetLang)
+        # if os.path.exists(translated_file_path):
+        #     headers = {"Content-Disposition": "attachment; filename=translated_doc.docx"}
+            # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', headers=headers)
     
     # Translate PDF File
     elif file.filename.endswith('.pdf'):
@@ -55,4 +58,10 @@ async def translate_doc(
     # Translate PDF File
     elif file.filename.endswith('.xlsx'):
         translated_file_path = excelTranslate.translate_excel(file_location, sourceLang, targetLang)
-            
+        headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
+        return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
+
+    elif file.filename.endswith('.pptx'):
+        translated_file_path = pptxTranslate.translate_pptx(file_location, sourceLang, targetLang)
+        # headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
+        # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
