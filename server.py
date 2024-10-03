@@ -24,12 +24,13 @@ app.add_middleware(
 # Example route for text generation
 @app.post("/machineTranslate/translate-text")
 async def generate_text(request: dict):
-    text = request.get("text")
-    source_lang = request.get("source_lang")
-    target_lang = request.get("target_lang")
+    text = request.get("text") if request.get("text") else request.get("q")
+    source_lang = request.get("source_lang") if request.get("source_lang") else request.get("source")
+    target_lang = request.get("target_lang") if request.get("target_lang") else request.get("target")
     result = translate_text(text, source_lang, target_lang)
-    print("source_lang", text)
-    return {"message": f"Text received: {result}"}
+    print("source_lang", source_lang, "text", text, "target_lang", target_lang)
+    # return {"message": f"Text received: {result}"}
+    return {"translatedText": result}
 
 #Translate Document(pdf,doc)
 @app.post("/machineTranslate/translate-doc")
