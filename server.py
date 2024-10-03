@@ -18,6 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+#-------------------------------------------KDS_Machinetranslate---------------------------------------------------
+
 # Example route for text generation
 @app.post("/machineTranslate/translate-text")
 async def generate_text(request: dict):
@@ -65,3 +68,5 @@ async def translate_doc(
         translated_file_path = pptxTranslate.translate_pptx(file_location, source_lang, target_lang)
         # headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
         # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
+
+#-----------------------------------------------------------KDS_END------------------------------------------------------------------------------------------------
