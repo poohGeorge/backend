@@ -30,18 +30,22 @@ def translate_docx(path, source_lang, target_lang):
         # Extract text from the paragraph
         text_elements = para.xpath('.//w:t', namespaces=namespaces)
         if text_elements:
-            original_text = ''.join([t.text for t in text_elements if t.text])
-            if original_text.strip():
-                # Translate the entire paragraph text once
-                translated_text = textTranslate.translate_text(original_text, source_lang, target_lang)
+            # original_text = ''.join([t.text for t in text_elements if t.text])
+            # if original_text.strip():
+            #     # Translate the entire paragraph text once
+            #     translated_text = textTranslate.translate_text(original_text, source_lang, target_lang)
 
-                # Split the translated text to match the number of original text elements
-                translated_parts = translated_text.split()  # This may need a more sophisticated split
-                for i, t in enumerate(text_elements):
-                    if i < len(translated_parts):
-                        t.text = translated_parts[i]
-                    else:
-                        t.text = ''
+            #     # Split the translated text to match the number of original text elements
+            #     translated_parts = translated_text.split()  # This may need a more sophisticated split
+            #     print("translated_parts", translated_parts)
+            #     for i, t in enumerate(text_elements):
+            #         if i < len(translated_parts):
+            #             t.text = translated_parts[i]
+            #         else:
+            #             t.text = ''
+            for t in text_elements:
+                if t.text:
+                    t.text = textTranslate.translate_text(t.text, source_lang, target_lang)
 
     # Save the modified XML
     translated_docx_filename = 'trans.docx'
