@@ -22,18 +22,18 @@ app.add_middleware(
 @app.post("/machineTranslate/translate-text")
 async def generate_text(request: dict):
     text = request.get("text")
-    source_lang = request.get("sourceLang")
-    target_lang = request.get("targetLang")
+    source_lang = request.get("source_lang")
+    target_lang = request.get("target_lang")
     result = translate_text(text, source_lang, target_lang)
-    print("sourceLang", text)
+    print("source_lang", text)
     return {"message": f"Text received: {result}"}
 
 #Translate Document(pdf,doc)
 @app.post("/machineTranslate/translate-doc")
 async def translate_doc(
         file: UploadFile = File(...), 
-        sourceLang: str = Form(...),  # Use Form to get it from form data
-        targetLang: str = Form(...)     # Use Form to get it from form data):
+        source_lang: str = Form(...),  # Use Form to get it from form data
+        target_lang: str = Form(...)     # Use Form to get it from form data):
     ):
 
     #Save file
@@ -45,23 +45,23 @@ async def translate_doc(
 
     #Translate Docx File
     if file.filename.endswith('.docx'):
-        docxTranslate.doc()
-        # translated_file_path = docxTranslate.translate_docx(file_location, sourceLang, targetLang)
-        # if os.path.exists(translated_file_path):
-        #     headers = {"Content-Disposition": "attachment; filename=translated_doc.docx"}
-            # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', headers=headers)
+        # docxTranslate.doc()
+        translated_file_path = docxTranslate.translate_docx(file_location, source_lang, target_lang)
+        if os.path.exists(translated_file_path):
+            headers = {"Content-Disposition": "attachment; filename=translated_doc.docx"}
+            return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document', headers=headers)
     
     # Translate PDF File
     elif file.filename.endswith('.pdf'):
-        translated_file_path = pdfTranslate.translate_pdf(file_location, sourceLang, targetLang)
+        translated_file_path = pdfTranslate.translate_pdf(file_location, source_lang, target_lang)
 
     # Translate PDF File
     elif file.filename.endswith('.xlsx'):
-        translated_file_path = excelTranslate.translate_excel(file_location, sourceLang, targetLang)
+        translated_file_path = excelTranslate.translate_excel(file_location, source_lang, target_lang)
         headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
         return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
     elif file.filename.endswith('.pptx'):
-        translated_file_path = pptxTranslate.translate_pptx(file_location, sourceLang, targetLang)
+        translated_file_path = pptxTranslate.translate_pptx(file_location, source_lang, target_lang)
         # headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
         # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
