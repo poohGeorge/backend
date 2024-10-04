@@ -67,7 +67,7 @@ async def translate_doc(
 
     elif file.filename.endswith('.pptx'):
         translated_file_path = pptxTranslate.translate_pptx(file_location, source_lang, target_lang)
-        # headers = {"Content-Disposition": "attachment; filename=translated_excel.xlsx"}
-        # return FileResponse(translated_file_path, media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
+        headers = {'Content-Disposition': 'attachment; filename="example.xlsx"'}
+        return FileResponse(translated_file_path, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers=headers)
 
 #-----------------------------------------------------------KDS_END------------------------------------------------------------------------------------------------
