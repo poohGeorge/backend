@@ -88,7 +88,7 @@ def translate(text, from_code, to_code):
         from_code = 'en'
     if to_code == 'auto':
         to_code = 'en'
-    if from_code == to_code:
+    if from_code == to_code and text == "":
         return text
     translatedText = ''
     translatedText = argostranslate.translate.translate(text, from_code, to_code)
